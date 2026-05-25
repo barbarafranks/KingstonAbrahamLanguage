@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kingston Abraham — Language N/A Prep</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Segoe UI', Arial, sans-serif; background: #f5f4f0; min-height: 100vh; }
+.header { background: #fff; border-bottom: 1px solid #e2e2e2; padding: 14px 24px; display: flex; align-items: center; gap: 14px; position: sticky; top: 0; z-index: 10; }
+.avatar { width: 40px; height: 40px; border-radius: 50%; background: #534AB7; color: #fff; font-weight: 700; font-size: 15px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.header-info { flex: 1; }
+.header-name { font-weight: 700; font-size: 15px; color: #1a1a2e; }
+.header-sub { font-size: 12px; color: #777; }
+.progress-wrap { flex: 2; max-width: 360px; }
+.progress-label { font-size: 11px; color: #555; margin-bottom: 4px; text-align: right; }
+.progress-bar { height: 7px; background: #e5e3f7; border-radius: 99px; overflow: hidden; }
+.progress-fill { height: 100%; background: #534AB7; border-radius: 99px; transition: width 0.4s ease; }
+.main { max-width: 760px; margin: 0 auto; padding: 28px 20px 80px; }
+.badge-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; flex-wrap: wrap; }
+.skill-badge { display: inline-flex; align-items: center; padding: 5px 14px; border-radius: 99px; font-size: 12px; font-weight: 700; letter-spacing: .03em; text-transform: uppercase; }
+.maps-tag { display: inline-block; padding: 3px 10px; border-radius: 99px; font-size: 11px; font-weight: 600; background: #f0f0f0; color: #555; }
+.q-card { background: #fff; border-radius: 14px; padding: 26px 26px 22px; box-shadow: 0 1px 6px rgba(0,0,0,.07); }
+.passage-label { font-size: 10px; font-weight: 800; color: #888; letter-spacing: .07em; text-transform: uppercase; margin-bottom: 6px; }
+.passage-box { background: #fafaf9; border: 1px solid #e0e0e0; border-radius: 8px; padding: 13px 16px; margin-bottom: 16px; font-size: 14px; color: #333; line-height: 1.75; }
+.q-text { font-size: 15px; font-weight: 700; color: #1a1a2e; line-height: 1.6; margin-bottom: 16px; }
+.q-ul { text-decoration: underline; text-underline-offset: 3px; }
+.tip-box { background: #E6F1FB; border-left: 4px solid #185FA5; border-radius: 6px; padding: 11px 14px; margin-bottom: 16px; }
+.tip-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; }
+.tip-label { font-size: 10px; font-weight: 800; color: #0C447C; letter-spacing: .07em; text-transform: uppercase; }
+.hint-btn { display: none; align-items: center; gap: 5px; font-size: 11px; font-weight: 600; color: #185FA5; background: none; border: 1px solid #185FA5; border-radius: 5px; padding: 3px 8px; cursor: pointer; }
+.hint-btn.visible { display: flex; }
+.tip-text { font-size: 13px; color: #0C447C; line-height: 1.5; }
+.hint-reveal { display: none; font-size: 13px; color: #0C447C; margin-top: 8px; padding-top: 8px; border-top: 1px dashed #aac8e8; line-height: 1.5; }
+.hint-reveal.open { display: block; }
+.options { display: flex; flex-direction: column; gap: 10px; }
+.opt { display: flex; align-items: flex-start; gap: 13px; padding: 12px 15px; border: 2px solid #e2e2e2; border-radius: 10px; cursor: pointer; transition: all .15s; background: #fff; }
+.opt:hover:not(.disabled) { border-color: #b0a8f0; background: #f7f6fe; }
+.opt.selected { border-color: #534AB7; background: #EEEDFE; }
+.opt.correct { border-color: #1D9E75; background: #EAF3DE; cursor: default; }
+.opt.wrong-tried { border-color: #E24B4A; background: #FCEBEB; opacity: .45; cursor: not-allowed; pointer-events: none; }
+.opt.disabled { cursor: default; }
+.opt-letter { width: 28px; height: 28px; min-width: 28px; border-radius: 50%; border: 2px solid #ccc; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px; color: #555; transition: all .15s; }
+.opt.selected .opt-letter { border-color: #534AB7; background: #534AB7; color: #fff; }
+.opt.correct .opt-letter { border-color: #1D9E75; background: #1D9E75; color: #fff; }
+.opt.wrong-tried .opt-letter { border-color: #E24B4A; background: #E24B4A; color: #fff; }
+.opt-text { font-size: 14px; color: #222; line-height: 1.5; padding-top: 3px; }
+.dropdown-row { font-size: 15px; color: #1a1a2e; margin-bottom: 14px; line-height: 2.2; }
+.dd-select { border: 2px solid #534AB7; border-radius: 8px; padding: 6px 12px; font-size: 14px; font-family: inherit; color: #1a1a2e; background: #fff; cursor: pointer; margin: 0 4px; }
+.feedback { margin-top: 14px; padding: 13px 15px; border-radius: 8px; font-size: 14px; line-height: 1.6; }
+.feedback.correct { background: #EAF3DE; border-left: 4px solid #1D9E75; color: #145a38; }
+.feedback.wrong { background: #FCEBEB; border-left: 4px solid #E24B4A; color: #8B1A1A; }
+.btn-row { display: flex; align-items: center; gap: 12px; margin-top: 18px; }
+.btn { padding: 11px 24px; border-radius: 9px; font-weight: 700; font-size: 14px; cursor: pointer; border: none; transition: all .15s; }
+.btn-check { background: #534AB7; color: #fff; }
+.btn-check:disabled { background: #ccc; cursor: not-allowed; }
+.btn-check:not(:disabled):hover { background: #3e369b; }
+.btn-next { background: #1D9E75; color: #fff; }
+.btn-next:hover { background: #158a63; }
+.btn-back { background: none; border: 2px solid #ccc; color: #555; }
+.btn-back:hover { border-color: #999; color: #333; }
+.btn-back.hidden { opacity: 0; pointer-events: none; }
+.results-card { background: #fff; border-radius: 16px; padding: 36px 32px; box-shadow: 0 2px 12px rgba(0,0,0,.08); text-align: center; }
+.score-ring { width: 120px; height: 120px; margin: 0 auto 20px; position: relative; }
+.score-ring svg { transform: rotate(-90deg); }
+.score-pct { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); font-size: 28px; font-weight: 800; color: #534AB7; }
+.results-title { font-size: 22px; font-weight: 800; color: #1a1a2e; margin-bottom: 6px; }
+.results-sub { font-size: 14px; color: #666; margin-bottom: 28px; }
+.skill-table { width: 100%; border-collapse: collapse; text-align: left; margin-bottom: 28px; }
+.skill-table th { font-size: 11px; text-transform: uppercase; letter-spacing: .05em; color: #888; padding: 8px 10px; border-bottom: 2px solid #eee; }
+.skill-table td { padding: 9px 10px; font-size: 14px; border-bottom: 1px solid #f0f0f0; }
+.pill-ok { background: #EAF3DE; color: #145a38; padding: 3px 10px; border-radius: 99px; font-size: 12px; font-weight: 700; }
+.pill-no { background: #FCEBEB; color: #8B1A1A; padding: 3px 10px; border-radius: 99px; font-size: 12px; font-weight: 700; }
+.rev-card { background: #fff; border-radius: 14px; padding: 22px; margin-bottom: 16px; box-shadow: 0 1px 6px rgba(0,0,0,.07); }
+.rev-card.ft { border-left: 5px solid #1D9E75; }
+.rev-card.nr { border-left: 5px solid #E24B4A; }
+.rev-label { font-size: 11px; text-transform: uppercase; letter-spacing: .06em; font-weight: 800; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 4px; }
+.rev-q { font-size: 14px; font-weight: 700; color: #1a1a2e; margin-bottom: 12px; line-height: 1.5; }
+.rev-pass { background: #fafaf9; border: 1px solid #e0e0e0; border-radius: 6px; padding: 10px 14px; margin-bottom: 10px; font-size: 13px; color: #444; line-height: 1.65; }
+.rev-opt { display: flex; gap: 9px; align-items: flex-start; padding: 8px 12px; border-radius: 7px; font-size: 13px; margin-bottom: 5px; }
+.rev-opt.c { background: #EAF3DE; color: #145a38; }
+.rev-opt.w { background: #FCEBEB; color: #8B1A1A; text-decoration: line-through; }
+.rev-opt.n { background: #f7f7f7; color: #444; }
+.rev-exp { margin-top: 12px; padding: 11px 14px; background: #f7f6fe; border-left: 4px solid #534AB7; border-radius: 6px; font-size: 13px; color: #333; line-height: 1.6; }
+.rev-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 10px; }
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="avatar">KA</div>
+  <div class="header-info">
+    <div class="header-name">Kingston Abraham</div>
+    <div class="header-sub">N/A Prep · 18 questions · Conjunctions, Prepositions, and Interjections, Narrative Writing: Sensory and Descriptive Language, Spelling Grade-Appropriate Words…</div>
+  </div>
+  <div class="progress-wrap">
+    <div class="progress-label" id="prog-label">Question 1 of 18</div>
+    <div class="progress-bar"><div class="progress-fill" id="prog-fill" style="width:0%"></div></div>
+  </div>
+</div>
+<div class="main" id="app"></div>
+<script>
+var QS = [
+  {
+    "type": "std",
+    "passageHtml": "<div class=\"passage-label\">Read this sentence</div><div class=\"passage-box\">Wow, Maya wanted to join the science club, but she had soccer practice after school on Tuesdays.</div>",
+    "qHtml": "Which word in the sentence is a <span class=\"q-ul\">conjunction</span>?",
+    "tip": "Conjunctions join words, phrases, or clauses. The FANBOYS (for, and, nor, but, or, yet, so) connect two complete ideas. Prepositions show position or time, and interjections show emotion.",
+    "hint": "Look for a word that connects two complete thoughts that could each stand alone as a sentence. Ignore words that show emotion or location.",
+    "opts": [
+      "but",
+      "after",
+      "Wow",
+      "wanted"
+    ],
+    "ans": 0,
+    "wrongs": [
+      null,
+      "'After' is a preposition here — it shows WHEN (time relationship with 'school'), not a connector between two equal ideas. This is a common mix-up because 'after' CAN sometimes be a subordinating conjunction, but in this sentence it links a noun phrase, not two clauses.",
+      "'Wow' is an interjection, not a conjunction. Interjections express sudden emotion or reaction and are usually set off by a comma. They don't connect ideas — they just add feeling.",
+      "'Wanted' is a verb (an action word), not a conjunction. Verbs tell what the subject does; they don't join clauses together."
+    ],
+    "exp": "The conjunction is 'but' — it's a coordinating conjunction (one of the FANBOYS) that joins two independent clauses: 'Maya wanted to join the science club' AND 'she had soccer practice after school on Tuesdays.' This question mirrors the test pattern of distinguishing conjunctions from prepositions (after), interjections (Wow), and other parts of speech in the same sentence. Remember: conjunctions CONNECT, prepositions show POSITION/TIME with a noun, and interjections show EMOTION.",
+    "skill": "Conjunctions, Prepositions, and Interjections",
+    "sc": "#185FA5",
+    "sb": "#E6F1FB",
+    "teks": "L.5.1.A",
+    "mapsTo": "→ Grade Review",
+    "n": 1
+  },
+  {
+    "type": "std",
+    "passageHtml": "<div class=\"passage-label\">Read this draft from a student's narrative</div><div class=\"passage-box\">Maya stepped onto the beach. The sand was there. The waves were in the ocean. She felt happy about her vacation.</div>",
+    "qHtml": "The writer wants to revise the paragraph to use <span class=\"q-ul\">sensory and descriptive language</span> that helps the reader experience the scene. Which revision BEST does this?",
+    "tip": "Sensory language appeals to the five senses — sight, sound, smell, touch, and taste. Look for the choice that shows specific details a reader can picture or feel, not just one that adds more words or feelings.",
+    "hint": "Skip choices that only tell you how Maya felt or that just add adjectives like 'nice' and 'pretty.' Find the one that lets you HEAR, SEE, or FEEL the beach.",
+    "opts": [
+      "Maya's bare toes sank into the warm, gritty sand as salty waves crashed and hissed against the shore.",
+      "Maya stepped onto the very nice beach. The pretty sand was there. The big waves were in the beautiful ocean.",
+      "Maya stepped onto the beach and felt so happy, excited, joyful, and thrilled about her amazing vacation.",
+      "Maya stepped onto the beach, which is a place by the ocean where sand meets the water and people swim."
+    ],
+    "ans": 0,
+    "wrongs": [
+      null,
+      "This adds adjectives like 'nice,' 'pretty,' and 'big,' but those are vague describing words — not sensory details. The reader still can't picture, hear, or feel the scene.",
+      "This piles up feeling words (happy, excited, joyful), but emotions are not the five senses. Sensory language shows the scene through sight, sound, smell, touch, or taste so the reader feels the emotion themselves.",
+      "This explains what a beach IS, like a definition. Narrative writing needs sensory details that put the reader INTO the moment, not general information about the setting."
+    ],
+    "exp": "Choice A uses sensory language: touch ('warm, gritty sand,' 'bare toes sank'), sound ('crashed and hissed'), and taste/smell ('salty'). This matches the W.5.3.D pattern of using concrete sensory words and phrases to convey experiences and events precisely — a common Grade 5 misconception is thinking that ANY extra adjectives or feeling words count as 'descriptive,' but the standard specifically asks for details that engage the five senses.",
+    "skill": "Narrative Writing: Sensory and Descriptive Language",
+    "sc": "#D85A30",
+    "sb": "#FAECE7",
+    "teks": "W.5.3.D",
+    "mapsTo": "→ Grade Review",
+    "n": 2
+  },
+  {
+    "type": "std",
+    "passageHtml": null,
+    "qHtml": "Which sentence is spelled <span class=\"q-ul\">correctly</span>?",
+    "tip": "Watch for words that double a consonant when adding -ed or -ing, and words with silent letters or tricky vowel patterns. Say each word slowly in your head and check each syllable.",
+    "hint": "Look carefully at the word that means 'happening' or 'taking place.' Does it follow the rule for doubling the final consonant before adding -ing?",
+    "opts": [
+      "We were planing a surprise party for our teacher.",
+      "We were planning a surprise party for our teacher.",
+      "We were planneing a surprise party for our teacher.",
+      "We were plannning a surprise party for our teacher."
+    ],
+    "ans": 1,
+    "wrongs": [
+      "This misses the doubled consonant rule. When a one-syllable word ends in a single vowel + single consonant (plan), you double the final consonant before adding -ing: planning, not planing.",
+      null,
+      "This adds an extra 'e' that doesn't belong. The base word 'plan' simply doubles the 'n' before -ing; you don't keep or add an 'e' in the middle.",
+      "This triples the consonant. The rule is to double the final consonant only — 'plan' becomes 'planning' with two n's, not three."
+    ],
+    "exp": "The correct spelling is 'planning.' This question targets the Grade 5 doubling rule (1-1-1 rule): when a one-syllable word ends in one vowel followed by one consonant, double the final consonant before adding a suffix that starts with a vowel (-ing, -ed, -er). Other examples: run → running, swim → swimming, stop → stopped. Missing this rule is one of the most common Grade 5 spelling errors on standard L.5.2.E.",
+    "skill": "Spelling Grade-Appropriate Words",
+    "sc": "#633806",
+    "sb": "#FAEEDA",
+    "teks": "L.5.2.E",
+    "mapsTo": "→ Grade Review",
+    "n": 3
+  },
+  {
+    "type": "std",
+    "passageHtml": "<div class=\"passage-label\">Read this dictionary entry</div><div class=\"passage-box\"><b>strain</b> /strān/ <i>verb</i><br>1. to pull or stretch something tightly<br>2. to pour a liquid through a filter to remove solid bits<br>3. to injure a body part by working it too hard<br>4. to try very hard to do something difficult<br><br><i>Example:</i> After cooking the pasta, Mom asked me to <u>strain</u> it over the sink.</div>",
+    "qHtml": "Which definition of <span class=\"q-ul\">strain</span> best matches how the word is used in the example sentence?",
+    "tip": "Don't pick the first definition you see. Plug each meaning back into the sentence and ask: does this make sense for what's happening with the pasta?",
+    "hint": "Think about what you do with pasta after it's done cooking. Why would you use a colander over the sink?",
+    "opts": [
+      "Definition 1: to pull or stretch something tightly",
+      "Definition 2: to pour a liquid through a filter to remove solid bits",
+      "Definition 3: to injure a body part by working it too hard",
+      "Definition 4: to try very hard to do something difficult"
+    ],
+    "ans": 1,
+    "wrongs": [
+      "This is the most common meaning of 'strain,' but the sentence isn't about stretching pasta — it's about what you do over the sink after cooking. You picked the first definition without testing it in context.",
+      null,
+      "This meaning fits phrases like 'strain your back,' but pasta doesn't have muscles. You matched the word to a familiar meaning instead of checking the sentence's clues like 'cooking' and 'over the sink.'",
+      "This meaning fits phrases like 'strain to hear,' but the sentence describes a kitchen action, not effort. You ignored the context clues about pasta and the sink."
+    ],
+    "exp": "Definition 2 is correct because after cooking pasta, you pour it through a colander to separate the noodles from the water — that's straining a liquid through a filter. On dictionary questions like this, Grade 5 students often pick definition 1 just because it's listed first, or pick a meaning they've heard before. The test is checking whether you can use context clues (here: 'cooking,' 'pasta,' 'over the sink') to choose the meaning that actually fits the sentence.",
+    "skill": "Reference Materials: Dictionaries, Glossaries, Thesauruses",
+    "sc": "#993556",
+    "sb": "#FBEAF0",
+    "teks": "L.5.4.C",
+    "mapsTo": "→ Grade Review",
+    "n": 4
+  },
+  {
+    "type": "std",
+    "passageHtml": "<div class=\"passage-label\">Read this</div><div class=\"passage-box\">After soccer practice, Maya flopped onto the couch and groaned, \"I'm so tired I could sleep for a year.\" Her little brother laughed and said she was being dramatic, but their mom just smiled and brought her a glass of water.</div>",
+    "qHtml": "What does Maya most likely mean when she says, <span class=\"q-ul\">\"I'm so tired I could sleep for a year\"</span>?",
+    "tip": "When a phrase sounds impossible if you take it word-for-word, it's usually figurative. Ask yourself what feeling or idea the speaker is trying to show by exaggerating.",
+    "hint": "Nobody can actually sleep for a whole year. The phrase is an exaggeration (hyperbole) used to express a strong feeling — focus on what feeling Maya is showing.",
+    "opts": [
+      "She is extremely exhausted from practice.",
+      "She plans to take a very long nap that will last many days.",
+      "She has a sleeping sickness that makes her sleep a long time.",
+      "She is bored and has nothing else to do but sleep."
+    ],
+    "ans": 0,
+    "wrongs": [
+      null,
+      "This takes the phrase too literally. Maya isn't actually planning to sleep for days — she's exaggerating to show how tired she feels.",
+      "This invents a problem that isn't in the passage. The figurative phrase shows feeling, not a medical condition.",
+      "This misreads the tone. \"Tired\" and \"sleep for a year\" point to exhaustion, not boredom — boredom would sound different (\"there's nothing to do\")."
+    ],
+    "exp": "This question targets the most common Grade 5 mistake with figurative language: reading expressions word-for-word instead of figuring out their meaning. \"I'm so tired I could sleep for a year\" is an exaggeration (hyperbole/idiom) — Maya is using impossible language to show that she is extremely exhausted after practice. The clue words \"after soccer practice\" and \"flopped\" support this. When you see a phrase that can't be literally true, look at the surrounding context to find the real feeling or meaning the speaker is expressing.",
+    "skill": "Figurative Language: Similes, Metaphors, and Idioms",
+    "sc": "#993556",
+    "sb": "#FBEAF0",
+    "teks": "L.5.5.A",
+    "mapsTo": "→ Grade Review",
+    "n": 5
+  },
+  {
+    "type": "std",
+    "passageHtml": null,
+    "qHtml": "Which sentence uses the <span class=\"q-ul\">present perfect tense</span> correctly?",
+    "tip": "Present perfect uses HAS or HAVE plus the past participle of the verb (often ending in -ed or an irregular form like \"eaten,\" \"gone,\" or \"written\"). It describes an action that started in the past and connects to now.",
+    "hint": "Look for the helping verb \"has\" or \"have\" paired with a past participle — not just a plain past-tense verb by itself, and not \"had\" (that's past perfect).",
+    "opts": [
+      "Maya has finished her science project three days early.",
+      "Maya have finish her science project three days early.",
+      "Maya has finishing her science project three days early.",
+      "Maya finished her science project three days early."
+    ],
+    "ans": 0,
+    "wrongs": [
+      null,
+      "Subject-verb agreement error: with a singular subject like \"Maya,\" you need \"has,\" not \"have.\" Also, \"finish\" must be the past participle \"finished.\"",
+      "Wrong verb form: present perfect needs the past participle (\"finished\"), not the -ing form (\"finishing\"). \"Has finishing\" is not a real tense.",
+      "This is simple past tense, not present perfect. Present perfect requires the helping verb \"has\" or \"have\" before the past participle."
+    ],
+    "exp": "Present perfect tense = HAS/HAVE + past participle. Because \"Maya\" is singular, we use \"has\" + \"finished.\" This pattern shows an action completed at some point before now. Grade 5 students often mix up present perfect with simple past (just \"finished\") or use the wrong helping-verb form (\"have\" with a singular subject, or pair \"has\" with -ing). Always check: (1) does the subject match the helping verb, and (2) is the main verb in past participle form?",
+    "skill": "Verb Tense: Perfect Tenses",
+    "sc": "#185FA5",
+    "sb": "#E6F1FB",
+    "teks": "L.5.1.B",
+    "mapsTo": "→ Grade Review",
+    "n": 6
+  },
+  {
+    "type": "std",
+    "passageHtml": "<div class=\"passage-label\">Read this</div><div class=\"passage-box\">Maya joined the school garden club last fall. By the time spring arrived, she ___ many different vegetables, and she was ready to teach the new members.</div>",
+    "qHtml": "Which verb form correctly completes the sentence using the <span class=\"q-ul\">past perfect tense</span>?",
+    "tip": "Past perfect shows an action that finished BEFORE another past action. Look for a second past-tense clue in the sentence — that tells you the first action needed to happen even earlier.",
+    "hint": "The sentence already says \"spring arrived\" (simple past). You need a verb form that shows Maya finished planting BEFORE spring arrived. Past perfect uses \"had\" + the past participle.",
+    "opts": [
+      "had grown",
+      "has grown",
+      "grew",
+      "will have grown"
+    ],
+    "ans": 0,
+    "wrongs": [
+      null,
+      "This is present perfect (has + participle), which connects a past action to the present. But the sentence is entirely in the past — \"spring arrived\" already happened, so present perfect doesn't fit.",
+      "This is simple past, which makes both actions sound like they happened at the same time. You need to show that the growing finished BEFORE spring arrived, which requires past perfect.",
+      "This is future perfect (will have + participle), used for actions that will be finished by a future time. The sentence is about the past, not the future."
+    ],
+    "exp": "The correct answer is \"had grown\" — past perfect tense (had + past participle). Past perfect is used when one past action happened BEFORE another past action. Here, Maya finished growing the vegetables BEFORE spring arrived. A common Grade 5 mistake is confusing present perfect (has/have + participle) with past perfect (had + participle), or using simple past for both actions when the sentence needs to show which one came first. Whenever you see two past events in a sentence, ask: which one happened earlier? That earlier one takes \"had + participle.\"",
+    "skill": "Verb Tense: Perfect Tenses in Writing",
+    "sc": "#185FA5",
+    "sb": "#E6F1FB",
+    "teks": "L.5.1.C",
+    "mapsTo": "→ Grade Review",
+    "n": 7
+  },
+  {
+    "type": "std",
+    "passageHtml": "<div class=\"passage-label\">Read this</div><div class=\"passage-box\">Maya wrote a report about her favorite author. She mentioned the novel Charlotte's Web and the short story The Veldt in the same paragraph.</div>",
+    "qHtml": "Which sentence shows the <span class=\"q-ul\">correct</span> punctuation for both titles?",
+    "tip": "Think about the length of each work. Long works (novels, movies, albums) get italics or underlining, while short works (short stories, poems, songs, articles) get quotation marks.",
+    "hint": "Charlotte's Web is a full-length novel, so it needs italics or underlining. \"The Veldt\" is a short story, so it needs quotation marks around it.",
+    "opts": [
+      "Maya read <i>Charlotte's Web</i> and \"The Veldt\" last week.",
+      "Maya read \"Charlotte's Web\" and <i>The Veldt</i> last week.",
+      "Maya read \"Charlotte's Web\" and \"The Veldt\" last week.",
+      "Maya read <i>Charlotte's Web</i> and <i>The Veldt</i> last week."
+    ],
+    "ans": 0,
+    "wrongs": [
+      null,
+      "This reverses the rule. A novel like Charlotte's Web needs italics, and a short story like \"The Veldt\" needs quotation marks — not the other way around.",
+      "This uses quotation marks for both, but a novel is a long work and must be italicized or underlined, not put in quotation marks.",
+      "This italicizes both, but a short story is a short work that belongs inside a larger collection, so it needs quotation marks, not italics."
+    ],
+    "exp": "The Grade 5 rule for titles: italicize or underline LONG works (books/novels, movies, magazines, newspapers, plays, albums), and use \"quotation marks\" around SHORT works (short stories, poems, songs, articles, chapters, episodes). Charlotte's Web is a novel → italics. \"The Veldt\" is a short story → quotation marks. The most common mistake on this standard is swapping the two formats or using the same format for both.",
+    "skill": "Underlining, Italics, and Quotation Marks for Titles",
+    "sc": "#633806",
+    "sb": "#FAEEDA",
+    "teks": "L.5.2.D",
+    "mapsTo": "→ Grade Review",
+    "n": 8
+  },
+  {
+    "type": "std",
+    "passageHtml": "<div class=\"passage-label\">Read this</div><div class=\"passage-box\">After winning the science fair, Maya felt <span class=\"q-ul\">proud</span> of her project. Her teacher said she was <span class=\"q-ul\">arrogant</span> when she bragged about it for the rest of the week.</div>",
+    "qHtml": "How does the meaning of <span class=\"q-ul\">arrogant</span> differ from the meaning of <span class=\"q-ul\">proud</span>?",
+    "tip": "Both words deal with feeling good about yourself, but one carries a negative judgment. Ask yourself which word sounds like a compliment and which sounds like a criticism.",
+    "hint": "Think about why the teacher used 'arrogant' instead of 'proud' — the teacher was pointing out a problem with Maya's behavior, not praising her.",
+    "opts": [
+      "<i>Arrogant</i> means feeling too important and looking down on others, while <i>proud</i> means feeling good about an accomplishment.",
+      "<i>Arrogant</i> and <i>proud</i> mean exactly the same thing — they are perfect synonyms.",
+      "<i>Arrogant</i> means happy and excited, while <i>proud</i> means embarrassed or shy.",
+      "<i>Arrogant</i> is a positive feeling, while <i>proud</i> is always a negative feeling."
+    ],
+    "ans": 0,
+    "wrongs": [
+      null,
+      "This treats the words as identical synonyms, missing the nuance. Words can be related in meaning but carry different shades — <i>arrogant</i> has a negative connotation that <i>proud</i> does not.",
+      "This confuses the meanings entirely. <i>Proud</i> is not about embarrassment, and <i>arrogant</i> is not just 'happy.' Both words relate to self-regard, not other emotions.",
+      "This reverses the connotations. <i>Proud</i> is usually positive (a compliment), and <i>arrogant</i> is the one with the negative shade of meaning."
+    ],
+    "exp": "This question targets the L.5.5.B skill of distinguishing shades of meaning among related words. <i>Proud</i> and <i>arrogant</i> are connected because both describe feeling good about oneself, but <i>arrogant</i> adds the negative idea of thinking you're better than others. A common mistake is treating closely related words as exact synonyms — Grade 5 readers need to notice the connotation (positive, neutral, or negative feeling) a word carries, especially when an author switches from one word to a stronger one to signal a change in tone.",
+    "skill": "Word Relationships and Nuances",
+    "sc": "#993556",
+    "sb": "#FBEAF0",
+    "teks": "L.5.5.B",
+    "mapsTo": "→ Grade Review",
+    "n": 9
+  },
+  {
+    "type": "std",
+    "passageHtml": "<div class=\"passage-label\">Read this draft</div><div class=\"passage-box\">Honeybees are important insects. They go to flowers and get stuff. Then they make honey in their homes.</div>",
+    "qHtml": "Which revision uses the most <span class=\"q-ul\">precise language</span> to improve the informative paragraph?",
+    "tip": "Precise language means using exact, specific words (especially strong nouns and verbs) instead of vague words like \"stuff,\" \"things,\" \"go,\" or \"homes.\" Look for the choice that replaces general words with subject-specific terms.",
+    "hint": "Two choices add describing words but keep vague verbs like \"go\" and nouns like \"stuff.\" Find the option that swaps EVERY vague word for an exact scientific term.",
+    "opts": [
+      "Honeybees are important pollinators. They visit flowers to collect nectar and pollen. Then they produce honey inside their hives.",
+      "Honeybees are really important insects. They quickly go to pretty flowers and get sweet stuff. Then they make yummy honey in their nice homes.",
+      "Honeybees are important bugs. They fly to flowers and grab things. After that, they make honey in the places where they live.",
+      "Honeybees are important. They get stuff from flowers, and it is used to make honey in their homes."
+    ],
+    "ans": 0,
+    "wrongs": [
+      null,
+      "This choice just adds adjectives like \"really,\" \"pretty,\" \"sweet,\" and \"yummy\" but keeps the vague verb \"go\" and the vague noun \"stuff.\" Precise language is not the same as adding more describing words — it means choosing exact words.",
+      "This swaps \"insects\" for the less precise \"bugs\" and replaces \"homes\" with the wordy phrase \"the places where they live.\" Precise language should be more exact and concise, not longer and vaguer.",
+      "This version removes details instead of adding precision. Words like \"stuff\" and \"homes\" stay vague, and the reader still doesn't know what bees collect or where they store honey."
+    ],
+    "exp": "Standard W.5.2.D asks writers to use precise language and domain-specific vocabulary in informative writing. The correct choice replaces vague words with exact scientific terms: \"insects\" → \"pollinators,\" \"go to\" → \"visit,\" \"stuff\" → \"nectar and pollen,\" \"make\" → \"produce,\" and \"homes\" → \"hives.\" A common Grade 5 misconception is thinking precise language means adding more adjectives (like \"pretty\" or \"yummy\"), but precision actually comes from choosing the most exact noun or verb for the topic.",
+    "skill": "Informative Writing: Precise Language",
+    "sc": "#D85A30",
+    "sb": "#FAECE7",
+    "teks": "W.5.2.D",
+    "mapsTo": "→ Grade Review",
+    "n": 10
+  },
+  {
+    "type": "std",
+    "passageHtml": null,
+    "qHtml": "Which sentence uses the <span class=\"q-ul\">comparative</span> or <span class=\"q-ul\">superlative</span> form correctly?",
+    "tip": "Use -er or 'more' when comparing TWO things, and -est or 'most' when comparing THREE OR MORE. Never combine both (like 'more faster') — that's a double comparison error.",
+    "hint": "Look carefully for double comparisons ('more' + '-er' together) and check whether the sentence is comparing two things or three or more.",
+    "opts": [
+      "Of all the runners on the track team, Maya is the fastest sprinter.",
+      "Maya is the most fastest sprinter on the whole track team.",
+      "Between Maya and Jenna, Maya is the fastest sprinter of the two.",
+      "Maya runs more faster than anyone else on the track team."
+    ],
+    "ans": 0,
+    "wrongs": [
+      null,
+      "This is a double superlative. You cannot use 'most' with '-est' together — pick one form, not both.",
+      "When comparing only TWO things (Maya and Jenna), use the comparative 'faster,' not the superlative 'fastest.'",
+      "This is a double comparative. 'More' and '-er' cannot be used together — say 'faster' OR 'more quickly,' not both."
+    ],
+    "exp": "The correct answer uses 'fastest' (superlative) because Maya is being compared to ALL the runners on the team (three or more). The most common Grade 5 mistakes on this standard are: (1) double comparisons like 'more faster' or 'most fastest,' and (2) using the superlative ('-est'/'most') when only two things are being compared. Remember: -er/more = 2 things; -est/most = 3+ things; never combine both forms.",
+    "skill": "Comparative and Superlative Adjectives/Adverbs",
+    "sc": "#185FA5",
+    "sb": "#E6F1FB",
+    "teks": "L.5.1.E",
+    "mapsTo": "→ Grade Review",
+    "n": 11
+  },
+  {
+    "type": "std",
+    "passageHtml": "<div class=\"passage-label\">Read this</div><div class=\"passage-box\">Maya loves to paint. She paints every day. She uses bright colors. She makes beautiful pictures.</div>",
+    "qHtml": "Which revision best combines the sentences to create <span class=\"q-ul\">sentence variety</span> while keeping the same meaning?",
+    "tip": "Good writers mix short and long sentences. Look for an option that combines ideas smoothly using conjunctions (and, but, because) or descriptive phrases — but watch out for run-ons and choppy fragments.",
+    "hint": "The best answer joins ideas using words like 'because' or 'and' to show how the ideas connect. Avoid choices that are just commas glued between sentences (that's a comma splice) or choices that drop important details.",
+    "opts": [
+      "Maya loves to paint, so she paints every day, using bright colors to make beautiful pictures.",
+      "Maya loves to paint, she paints every day, she uses bright colors, she makes beautiful pictures.",
+      "Maya loves painting. Every day. Bright colors. Beautiful pictures she makes.",
+      "Maya loves to paint and she paints every day and she uses bright colors and she makes beautiful pictures."
+    ],
+    "ans": 0,
+    "wrongs": [
+      null,
+      "This is a comma splice — four independent clauses joined by only commas. Commas alone cannot connect complete sentences; you need a conjunction or a period.",
+      "These are sentence fragments. 'Every day,' 'Bright colors,' and 'Beautiful pictures she makes' are not complete sentences and the word order in the last one is awkward.",
+      "This is a run-on sentence created by stringing clauses together with repeated 'and.' Overusing 'and' creates a stringy sentence, not true sentence variety."
+    ],
+    "exp": "Answer A combines the four short, choppy sentences into one smooth sentence using the conjunction 'so' and the descriptive phrase 'using bright colors.' This creates true sentence variety — combining short ideas into longer, more interesting sentences while staying grammatically correct. The common Grade 5 mistake is confusing 'combining sentences' with 'gluing sentences together' using commas (comma splice) or repeated 'and' (run-on). Real sentence variety means using different sentence lengths AND different connecting words to show how ideas relate.",
+    "skill": "Sentence Variety and Structure",
+    "sc": "#185FA5",
+    "sb": "#E6F1FB",
+    "teks": "L.5.3.A",
+    "mapsTo": "→ Grade Review",
+    "n": 12
+  },
+  {
+    "type": "std",
+    "passageHtml": "<div class=\"passage-label\">Read this</div><div class=\"passage-box\">Maya worked on her science fair project for weeks. When her teacher saw the final display, she smiled and said Maya was very ______ about her ideas.</div>",
+    "qHtml": "Which word has the most <span class=\"q-ul\">positive</span> connotation to fill in the blank?",
+    "tip": "All four words mean something similar, but each one gives a different feeling. Ask yourself: which word would a teacher use to compliment a student?",
+    "hint": "Two of these words sound like criticism (negative), one sounds neutral, and one sounds like praise. The teacher is smiling — she means it as a compliment.",
+    "opts": [
+      "passionate",
+      "stubborn",
+      "pushy",
+      "obsessed"
+    ],
+    "ans": 0,
+    "wrongs": [
+      null,
+      "\"Stubborn\" has a negative connotation — it suggests refusing to listen or change. A teacher complimenting a student would not call her stubborn.",
+      "\"Pushy\" has a negative connotation — it suggests being annoying or forceful in a rude way. This does not match the teacher's smile and praise.",
+      "\"Obsessed\" has a negative connotation — it suggests being unhealthy or out of control about something. This is too strong and negative for a compliment."
+    ],
+    "exp": "All four words describe someone who cares a lot about something, but they have different connotations (feelings). \"Passionate\" has a positive connotation — it means caring deeply in a good way. \"Stubborn,\" \"pushy,\" and \"obsessed\" all have negative connotations. The clue \"smiled\" and the fact that it's a compliment tells you the blank needs a positive word. On connotation questions like this, watch the context clues to decide whether the word should feel positive, negative, or neutral.",
+    "skill": "Word Connotations",
+    "sc": "#993556",
+    "sb": "#FBEAF0",
+    "teks": "L.5.5.C",
+    "mapsTo": "→ Grade Review",
+    "n": 13
+  },
+  {
+    "type": "std",
+    "passageHtml": "<div class=\"passage-label\">Read this prompt</div><div class=\"passage-box\">Your school is thinking about replacing the 20-minute recess with extra reading time. Write an opinion essay telling whether you agree or disagree with this change.</div>",
+    "qHtml": "Which sentence is the <span class=\"q-ul\">best</span> introduction for an opinion essay responding to this prompt?",
+    "tip": "A strong opinion introduction does two things: it hooks the reader AND clearly states the writer's opinion (claim). Look for a sentence that takes a clear side, not one that just gives facts or asks a question.",
+    "hint": "Cross out any choice that does not clearly tell the reader what the writer thinks. The introduction must include a claim — a statement the writer will defend.",
+    "opts": [
+      "Recess is a 20-minute break that students take in the middle of the school day.",
+      "Running, laughing, and playing tag — recess is the best part of my day, and our school should keep it instead of adding more reading time.",
+      "Do you think recess should be replaced with reading time at our school?",
+      "Some students like recess and some students like reading, so both are important parts of school."
+    ],
+    "ans": 1,
+    "wrongs": [
+      "This is a fact, not an opinion. It tells what recess is but never states what the writer believes about the change.",
+      null,
+      "This is a question, not a claim. An opinion introduction must take a side, not ask the reader what they think.",
+      "This sentence avoids picking a side. A claim must clearly state the writer's position — saying 'both are important' is not an opinion."
+    ],
+    "exp": "This question mirrors the W.5.1.A pattern: students must introduce a topic AND state a clear opinion (claim). Choice B hooks the reader with vivid words ('running, laughing, playing tag') and states a clear opinion ('our school should keep it instead of adding more reading time'). The common Grade 5 mistake is confusing a topic sentence (A), a question (C), or a balanced/neutral statement (D) with a real claim. A claim must take a side the writer can defend with reasons.",
+    "skill": "Opinion Writing: Introduction and Claim",
+    "sc": "#0F6E56",
+    "sb": "#E1F5EE",
+    "teks": "W.5.1.A",
+    "mapsTo": "→ Grade Review",
+    "n": 14
+  },
+  {
+    "type": "std",
+    "passageHtml": "<div class=\"passage-label\">Read this opinion paragraph</div><div class=\"passage-box\">Our school should add a longer recess time to the daily schedule. Studies show that kids who get more outdoor play time focus better in class. A longer recess would also help students make friends and reduce stress. Teachers have even said that students return to class calmer and more ready to learn.</div>",
+    "qHtml": "Which sentence would be the <span class=\"q-ul\">best concluding sentence</span> for this opinion paragraph?",
+    "tip": "A strong opinion conclusion should restate the writer's opinion and tie the reasons together — it should not add a brand new reason or change the topic.",
+    "hint": "Look for a sentence that wraps up the writer's main opinion about recess. Avoid choices that introduce a new idea (like lunch or homework) or that simply repeat one detail from the middle of the paragraph.",
+    "opts": [
+      "For all of these reasons, our school should give students a longer recess so they can learn, grow, and feel their best.",
+      "Also, the school cafeteria should serve healthier lunches to help students stay focused.",
+      "Teachers said students come back to class calmer after recess.",
+      "Recess is when students go outside to play games like tag and basketball."
+    ],
+    "ans": 0,
+    "wrongs": [
+      null,
+      "This choice adds a brand-new opinion about lunches. A conclusion should wrap up the original opinion, not introduce a new argument.",
+      "This choice just repeats one supporting detail from the paragraph. A conclusion should pull all the reasons together, not echo a single point.",
+      "This choice gives a definition or general fact about recess. A conclusion should restate the writer's opinion, not explain what the topic is."
+    ],
+    "exp": "Standard W.5.1.D asks writers to provide a concluding statement that supports the opinion presented. The best conclusion (A) signals the ending with 'For all of these reasons,' restates the opinion (longer recess), and ties back to the supporting points (learning, growing, feeling their best). The common Grade 5 mistakes this question targets are: (B) adding a new argument, (C) repeating one detail instead of summarizing, and (D) defining the topic instead of concluding the opinion.",
+    "skill": "Opinion Writing: Conclusion",
+    "sc": "#0F6E56",
+    "sb": "#E1F5EE",
+    "teks": "W.5.1.D",
+    "mapsTo": "→ Grade Review",
+    "n": 15
+  },
+  {
+    "type": "std",
+    "passageHtml": "<div class=\"passage-label\">Read this draft of an informative essay about honeybees</div><div class=\"passage-box\">Honeybees are some of the most important insects on Earth. They pollinate flowers, fruits, and vegetables that people and animals depend on for food. Without honeybees, many crops would not be able to grow. Scientists are working hard to protect honeybee populations from disease and habitat loss.</div>",
+    "qHtml": "Which sentence would be the <span class=\"q-ul\">best conclusion</span> for this informative essay?",
+    "tip": "A strong conclusion in informative writing wraps up the main idea without adding brand-new facts or personal opinions. Look for a sentence that restates why the topic matters.",
+    "hint": "Cross out any choice that introduces a new fact, gives the writer's opinion, or only talks about one tiny detail. The conclusion should match the BIG idea of the whole essay.",
+    "opts": [
+      "Protecting honeybees is important because they help feed people and animals all over the world.",
+      "I think honeybees are the coolest insects, and everyone should keep a beehive in their backyard.",
+      "Honeybees can sting people, and some people are very allergic to bee stings.",
+      "Bumblebees and butterflies are also helpful pollinators that visit gardens."
+    ],
+    "ans": 0,
+    "wrongs": [
+      null,
+      "This adds a personal opinion ('I think...the coolest') and a new suggestion. A Grade 5 informative conclusion should sum up the main idea, not share feelings or give advice.",
+      "This introduces a brand-new topic (bee stings and allergies) that the essay never discussed. Conclusions should wrap up existing ideas, not start new ones.",
+      "This brings up new subjects (bumblebees and butterflies) that don't appear anywhere else in the essay. A conclusion should restate the focus of the piece, not switch to a different topic."
+    ],
+    "exp": "The correct conclusion (A) restates the essay's main idea — that honeybees matter because they help produce food — without adding new facts or opinions. This mirrors the most common W.5.2.E mistake: students often pick a conclusion that adds personal opinions or brand-new information instead of summarizing what the essay already said. A strong informative conclusion should sound like a 'wrap-up' of the main idea you've been reading about.",
+    "skill": "Informative Writing: Conclusion",
+    "sc": "#D85A30",
+    "sb": "#FAECE7",
+    "teks": "W.5.2.E",
+    "mapsTo": "→ Grade Review",
+    "n": 16
+  },
+  {
+    "type": "std",
+    "passageHtml": "<div class=\"passage-label\">Read this draft from a student's narrative</div><div class=\"passage-box\">Maya zipped up her backpack and hurried to the bus stop. _______, she realized she had forgotten her science project on the kitchen table. She sprinted home, grabbed the poster, and made it back just as the bus pulled up.</div>",
+    "qHtml": "Which <span class=\"q-ul\">transition word or phrase</span> best fits in the blank to show the sequence of events?",
+    "tip": "Transitions show HOW events connect in time. Ask yourself: did this moment happen at the same time, after a short pause, or as a surprise interruption? Match the transition to the timing.",
+    "hint": "The event in the blank interrupts Maya's plan suddenly. Look for a transition that signals an unexpected moment in the middle of an action.",
+    "opts": [
+      "Suddenly",
+      "Finally",
+      "In conclusion",
+      "For example"
+    ],
+    "ans": 0,
+    "wrongs": [
+      null,
+      "'Finally' signals the LAST event in a sequence, but Maya's realization happens in the middle of the story — there are still more actions to come after it.",
+      "'In conclusion' is a transition used in essays or reports to wrap up ideas, not in narratives to move between story events. This is a common mix-up between narrative and informational transitions.",
+      "'For example' introduces an example or evidence in informational writing. Narratives use time-based transitions (then, suddenly, later) to show sequence, not example transitions."
+    ],
+    "exp": "'Suddenly' is correct because it signals an unexpected event that interrupts the action — Maya was on her way to the bus when she realized her mistake. Grade 5 students often confuse narrative transitions (suddenly, meanwhile, later, the next morning) with informational transitions (for example, in conclusion, therefore). Standard W.5.3.C requires using transitions to manage the sequence of events in a STORY, so always pick time-based or event-based transitions for narratives.",
+    "skill": "Narrative Writing: Transitions and Sequence",
+    "sc": "#D85A30",
+    "sb": "#FAECE7",
+    "teks": "W.5.3.C",
+    "mapsTo": "→ Grade Review",
+    "n": 17
+  },
+  {
+    "type": "std",
+    "passageHtml": "<div class=\"passage-label\">Read this draft paragraph</div><div class=\"passage-box\">(1) My family went to the beach last Saturday. (2) The sand was hot. (3) The sand was soft. (4) The sand felt nice between my toes. (5) We built a giant sandcastle with three towers.</div>",
+    "qHtml": "Which revision <span class=\"q-ul\">best</span> combines sentences 2, 3, and 4 to improve the paragraph?",
+    "tip": "When combining choppy sentences, look for repeated subjects and try to join the details using commas and the word \"and.\" The best revision keeps all the original meaning without adding new ideas.",
+    "hint": "All three sentences describe the sand. Find the choice that lists all three descriptions in one smooth sentence without dropping any detail or adding information that wasn't there.",
+    "opts": [
+      "The hot, soft sand felt nice between my toes.",
+      "The sand was hot and soft and it felt nice.",
+      "The sand was hot, but it was soft and nice between my toes.",
+      "The burning sand was soft like a pillow and tickled my toes."
+    ],
+    "ans": 0,
+    "wrongs": [
+      null,
+      "This keeps the choppy \"was... and... and\" pattern instead of using descriptive adjectives before the noun. Good revision tightens wording, not just glues sentences together.",
+      "Adding \"but\" changes the meaning by suggesting hot and soft are opposites. Revision should preserve the original meaning, not change relationships between ideas.",
+      "This adds new details (\"burning,\" \"like a pillow,\" \"tickled\") that were not in the original sentences. Revising means improving wording, not inventing new information."
+    ],
+    "exp": "The correct revision combines the three short sentences by moving \"hot\" and \"soft\" in front of \"sand\" as adjectives and keeping the action \"felt nice between my toes.\" This matches the W.5.5 pattern of revising to strengthen writing — a common Grade 5 misconception is thinking revision means adding new descriptive words or changing meaning, when it actually means making the existing ideas clearer and less repetitive.",
+    "skill": "Revising and Editing Writing",
+    "sc": "#D85A30",
+    "sb": "#FAECE7",
+    "teks": "W.5.5",
+    "mapsTo": "→ Grade Review",
+    "n": 18
+  }
+];
+
+var cur=0, sel=null, ddSel=null, submitted=false;
+var scores=QS.map(function(){return null;});
+var tried=QS.map(function(){return [];});
+var lastWrong=null, hintOn=false, hintOpen=false, STATE='quiz';
+var EYE='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>';
+
+function render(){
+  var a=document.getElementById('app');
+  if(STATE==='quiz') rQuiz(a);
+  else if(STATE==='results') rResults(a);
+  else rReview(a);
+}
+
+function rQuiz(a){
+  var q=QS[cur], t=tried[cur], pct=Math.round((cur/QS.length)*100);
+  document.getElementById('prog-fill').style.width=pct+'%';
+  document.getElementById('prog-label').textContent='Question '+(cur+1)+' of '+QS.length+' · '+q.skill;
+
+  var ph=q.passageHtml||'';
+  var qt='<div class="q-text">'+(q.qHtml||q.q||'')+'</div>';
+  var ih='', fb='';
+
+  if(q.type==='std'){
+    ih=rStd(q,t);
+    if(lastWrong&&!submitted) fb='<div class="feedback wrong">✗ '+lastWrong+'</div>';
+    if(submitted) fb='<div class="feedback correct">✓ '+q.exp+'</div>';
+  } else if(q.type==='dropdown'){
+    ih=rDD(q);
+    if(submitted) fb='<div class="feedback correct">✓ '+q.exp+'</div>';
+    else if(lastWrong) fb='<div class="feedback wrong">✗ '+lastWrong+'</div>';
+  }
+
+  var hb=q.hint?'<button class="hint-btn'+(hintOn?' visible':'')+'" onclick="tHint()">'+EYE+(hintOpen?' Hide hint':' Show hint')+'</button>':'';
+  var hr=q.hint?'<div class="hint-reveal'+(hintOpen?' open':'')+'"><strong>Hint:</strong> '+q.hint+'</div>':'';
+
+  var ok=(q.type==='std')?(sel!==null&&!submitted):(ddSel!==null&&!submitted);
+  var cb=!submitted?'<button class="btn btn-check"'+(ok?'':' disabled')+' onclick="doSub()">Check answer</button>':'';
+  var nb=submitted?'<button class="btn btn-next" onclick="nxt()">Next question →</button>':'';
+  var backCls=cur===0?'btn btn-back hidden':'btn btn-back';
+
+  a.innerHTML=
+    '<div class="badge-row"><span class="skill-badge" style="background:'+q.sb+';color:'+q.sc+'">'+q.skill+'</span><span class="maps-tag">'+q.mapsTo+'</span></div>'+
+    '<div class="q-card">'+ph+qt+
+    '<div class="tip-box"><div class="tip-header"><span class="tip-label">Coaching Tip</span>'+hb+'</div><div class="tip-text">'+q.tip+'</div>'+hr+'</div>'+
+    ih+fb+
+    '<div class="btn-row"><button class="'+backCls+'" onclick="bk()">← Back</button>'+cb+nb+'</div>'+
+    '</div>';
+}
+
+function rStd(q,t){
+  return '<div class="options">'+q.opts.map(function(o,i){
+    var c='opt';
+    if(t.indexOf(i)!==-1) c+=' wrong-tried disabled';
+    else if(submitted&&i===q.ans) c+=' correct disabled';
+    else if(!submitted&&sel===i) c+=' selected';
+    else if(submitted) c+=' disabled';
+    return '<div class="'+c+'" onclick="sO('+i+')"><div class="opt-letter">'+String.fromCharCode(65+i)+'</div><div class="opt-text">'+o+'</div></div>';
+  }).join('')+'</div>';
+}
+
+function rDD(q){
+  var opts=q.dropOptions.map(function(x,i){
+    return '<option value="'+i+'"'+(ddSel===i?' selected':'')+'>'+x+'</option>';
+  }).join('');
+  var sel2=submitted
+    ?'<select class="dd-select" disabled><option>'+q.dropOptions[q.ans]+'</option></select>'
+    :'<select class="dd-select" onchange="sDD(this.value)"><option value="">— choose —</option>'+opts+'</select>';
+  return '<div class="dropdown-row">'+(q.dropBefore||'')+' '+sel2+' '+(q.dropAfter||'')+'</div>';
+}
+
+function sO(i){ if(submitted||tried[cur].indexOf(i)!==-1)return; sel=i; lastWrong=null; render(); }
+function sDD(v){ ddSel=v===''?null:parseInt(v); lastWrong=null; render(); }
+function tHint(){ if(!hintOn)return; hintOpen=!hintOpen; render(); }
+
+function doSub(){
+  if(submitted)return;
+  var q=QS[cur];
+  if(q.type==='std'){
+    if(sel===null)return;
+    if(sel===q.ans){ submitted=true; scores[cur]=tried[cur].length===0; lastWrong=null; }
+    else{ tried[cur].push(sel); hintOn=true; lastWrong=q.wrongs[sel]||"Not quite — use the hint for more guidance."; sel=null; }
+  } else if(q.type==='dropdown'){
+    if(ddSel===null)return;
+    if(ddSel===q.ans){ submitted=true; scores[cur]=tried[cur].length===0; lastWrong=null; }
+    else{ tried[cur].push(ddSel); hintOn=true; lastWrong="That word doesn't match the direction or meaning of the original. Use the hint."; ddSel=null; }
+  }
+  render();
+}
+
+function nxt(){
+  if(cur<QS.length-1){
+    cur++; sel=null; ddSel=null; submitted=false; lastWrong=null; hintOn=false; hintOpen=false; render();
+  } else {
+    STATE='results';
+    document.getElementById('prog-fill').style.width='100%';
+    document.getElementById('prog-label').textContent='Complete!';
+    render();
+  }
+}
+
+function bk(){
+  if(cur===0)return;
+  cur--; sel=null; ddSel=null;
+  submitted=scores[cur]!==null;
+  lastWrong=null; hintOn=false; hintOpen=false;
+  render();
+}
+
+function rResults(a){
+  var ft=scores.filter(function(s){return s===true;}).length, tot=QS.length, pct=Math.round((ft/tot)*100);
+  var sm={};
+  QS.forEach(function(q,i){
+    if(!sm[q.skill]) sm[q.skill]={tot:0,ok:0};
+    sm[q.skill].tot++;
+    if(scores[i]===true) sm[q.skill].ok++;
+  });
+  var rows=Object.keys(sm).map(function(sk){
+    var d=sm[sk], ok=d.ok===d.tot;
+    return '<tr><td>'+sk+'</td><td>'+d.ok+' / '+d.tot+'</td><td><span class="'+(ok?'pill-ok':'pill-no')+'">'+(ok?'✓ Mastered':'⚠ Review')+'</span></td></tr>';
+  }).join('');
+  var r=52, c=2*Math.PI*r, d=(pct/100)*c;
+  a.innerHTML='<div class="results-card">'+
+    '<div class="score-ring"><svg width="120" height="120" viewBox="0 0 120 120">'+
+    '<circle cx="60" cy="60" r="'+r+'" fill="none" stroke="#e5e3f7" stroke-width="12"/>'+
+    '<circle cx="60" cy="60" r="'+r+'" fill="none" stroke="#534AB7" stroke-width="12" stroke-dasharray="'+d.toFixed(1)+' '+c.toFixed(1)+'" stroke-linecap="round"/>'+
+    '</svg><div class="score-pct">'+pct+'%</div></div>'+
+    '<div class="results-title">Practice Complete!</div>'+
+    '<div class="results-sub">'+ft+' of '+tot+' first-try correct · Targeted for N/A</div>'+
+    '<table class="skill-table"><thead><tr><th>Skill</th><th>Score</th><th>Status</th></tr></thead><tbody>'+rows+'</tbody></table>'+
+    '<button class="btn" style="background:#f0eefd;color:#534AB7;border:2px solid #534AB7;margin-right:8px" onclick="STATE='review';render()">Review all answers</button>'+
+    '<button class="btn" style="background:#534AB7;color:#fff" onclick="restart()">Practice again</button>'+
+    '</div>';
+}
+
+function restart(){
+  cur=0; sel=null; ddSel=null; submitted=false;
+  scores=QS.map(function(){return null;});
+  tried=QS.map(function(){return [];});
+  lastWrong=null; hintOn=false; hintOpen=false; STATE='quiz';
+  document.getElementById('prog-fill').style.width='0%';
+  render();
+}
+
+function rReview(a){
+  var html='<div class="rev-top">'+
+    '<button class="btn" style="background:#f0eefd;color:#534AB7;border:2px solid #534AB7" onclick="STATE='results';render()">← Back to results</button>'+
+    '<button class="btn" style="background:#534AB7;color:#fff" onclick="restart()">Practice again</button>'+
+    '</div>';
+  QS.forEach(function(q,i){
+    var ft=scores[i]===true, t=tried[i], att=t.length+1;
+    var lbl=ft?'✓ First try':'✗ Needed '+att+' attempt'+(att>1?'s':'');
+    var cls='rev-card '+(ft?'ft':'nr');
+    var ph=q.passageHtml?q.passageHtml.replace('passage-box','rev-pass'):'';
+    var qt=q.qHtml||q.q||'';
+    var arr=q.type==='dropdown'?q.dropOptions:q.opts;
+    var oh=arr.map(function(x,j){
+      var oc='rev-opt '+(j===q.ans?'c':t.indexOf(j)!==-1?'w':'n');
+      return '<div class="'+oc+'"><strong>'+String.fromCharCode(65+j)+'.</strong> '+x+'</div>';
+    }).join('');
+    html+='<div class="'+cls+'">'+
+      '<div class="rev-label">'+
+        '<span style="color:'+q.sc+'">'+q.skill+' · '+q.teks+' · '+q.mapsTo+'</span>'+
+        '<span style="color:'+(ft?'#145a38':'#8B1A1A')+'">'+lbl+'</span>'+
+      '</div>'+
+      ph+'<div class="rev-q">'+qt+'</div>'+oh+
+      '<div class="rev-exp"><strong>Why:</strong> '+q.exp+'</div>'+
+    '</div>';
+  });
+  a.innerHTML=html;
+}
+
+render();
+</script>
+</body>
+</html>
