@@ -717,7 +717,7 @@ function rResults(a){
     '<div class="results-title">Practice Complete!</div>'+
     '<div class="results-sub">'+ft+' of '+tot+' first-try correct · Targeted for N/A</div>'+
     '<table class="skill-table"><thead><tr><th>Skill</th><th>Score</th><th>Status</th></tr></thead><tbody>'+rows+'</tbody></table>'+
-    '<button class="btn" style="background:#f0eefd;color:#534AB7;border:2px solid #534AB7;margin-right:8px" onclick="STATE='review';render()">Review all answers</button>'+
+    '<button class="btn" style="background:#f0eefd;color:#534AB7;border:2px solid #534AB7;margin-right:8px" onclick="goReview()">Review all answers</button>'+
     '<button class="btn" style="background:#534AB7;color:#fff" onclick="restart()">Practice again</button>'+
     '</div>';
 }
@@ -731,9 +731,12 @@ function restart(){
   render();
 }
 
+function goResults(){ STATE='results'; render(); }
+function goReview(){ STATE='review'; render(); }
+
 function rReview(a){
   var html='<div class="rev-top">'+
-    '<button class="btn" style="background:#f0eefd;color:#534AB7;border:2px solid #534AB7" onclick="STATE='results';render()">← Back to results</button>'+
+    '<button class="btn" style="background:#f0eefd;color:#534AB7;border:2px solid #534AB7" onclick="goResults()">← Back to results</button>'+
     '<button class="btn" style="background:#534AB7;color:#fff" onclick="restart()">Practice again</button>'+
     '</div>';
   QS.forEach(function(q,i){
